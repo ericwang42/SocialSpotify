@@ -11,7 +11,7 @@ export async function displayCurrentlyPlaying(token: string) {
 
   if (!track) {
     // Hide the display when there is no track playing
-    currentlyPlayingElement.style.display = "none";
+    currentlyPlayingElement.textContent = `Not Currently Listening`;
     return;
   }
 
