@@ -10,7 +10,7 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     params.append("client_id", clientId);
     params.append("response_type", "code");
     params.append("redirect_uri", "http://localhost:5173/callback");
-    params.append("scope", "user-read-private user-read-email");
+    params.append("scope", "user-read-private user-read-email user-top-read");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
     params.append("scope", "user-read-private user-read-email user-read-currently-playing");
@@ -101,6 +101,29 @@ export async function fetchProfile(token: string): Promise<any> {
     return await result.json();
 }
 
+export async function fetchTopTracks(access_token: string): Promise<any> {
+    const result = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", {
+      method: "GET",
+      headers: { Authorization: `Bearer ${access_token}` },
+    });
+  
+    return await result.json();
+  }
+
+export function populateTracks(topTracks: any){
+    const tracksContainer = document.getElementById("tracks");
+    if (tracksContainer) {
+        tracksContainer.innerHTML = ""; // Clear previous tracks
+
+        topTracks.items.forEach((track: any) => {
+            const trackElement = document.createElement("li");
+            trackElement.innerText = track.name;
+            tracksContainer.appendChild(trackElement);
+        });
+    }
+}
+
+
 export async function fetchCurrentlyPlaying(token: string) {
     const result = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
         headers: {
@@ -116,11 +139,12 @@ export async function fetchCurrentlyPlaying(token: string) {
     return data.item; // Return the currently playing track object
 }
 
-export function populateUI(profile: any) {
+export function populateProfile(profile: any) {
     document.getElementById("displayName")!.innerText = profile.display_name;
     if (profile.images[0]) {
         const profileImage = new Image(200, 200);
         profileImage.src = profile.images[0].url;
+        profileImage.classList.add("circular-image"); 
         document.getElementById("avatar")!.appendChild(profileImage);
     }
     document.getElementById("id")!.innerText = profile.id;
@@ -131,3 +155,4 @@ export function populateUI(profile: any) {
     document.getElementById("url")!.setAttribute("href", profile.href);
     document.getElementById("imgUrl")!.innerText = profile.images[0]?.url ?? '(no profile image)';
 }
+

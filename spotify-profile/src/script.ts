@@ -11,7 +11,10 @@ if (!code) {
     const tokens = await Spotify.getTokens(clientId, code);
     const { access_token, refresh_token } = tokens;
     const profile = await Spotify.fetchProfile(access_token);
-    Spotify.populateUI(profile);
+    Spotify.populateProfile(profile);
+    const tracks = await Spotify.fetchTopTracks(access_token);
+    Spotify.populateTracks(tracks);
+    
 
     localStorage.setItem("refresh_token", refresh_token);
 
