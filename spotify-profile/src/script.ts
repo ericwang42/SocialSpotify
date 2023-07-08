@@ -5,9 +5,21 @@ const code = params.get("code");
 if (!code) {
     redirectToAuthCodeFlow(clientId);
 } else {
-    const accessToken = await getAccessToken(clientId, code);
-    const profile = await fetchProfile(accessToken);
+    const tokens = await getTokens(clientId, code);
+    const { access_token, refresh_token } = tokens;
+    const profile = await fetchProfile(access_token);
     populateUI(profile);
+
+    // Store the refresh token securely for future use
+    localStorage.setItem("refresh_token", refresh_token);
+}
+
+// Refresh access token if a refresh token exists
+const refreshToken = localStorage.getItem("refresh_token");
+if (refreshToken) {
+    const newAccessToken = await refreshAccessToken(clientId, refreshToken);
+    // Use the new access token for API requests or update the existing access token in your code
+    // For example: accessToken = newAccessToken;
 }
 
 export async function redirectToAuthCodeFlow(clientId: string) {
@@ -25,6 +37,41 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     params.append("code_challenge", challenge);
 
     document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
+}
+
+export async function getTokens(clientId: string, code: string) {
+    const verifier = localStorage.getItem("verifier");
+
+    const params = new URLSearchParams();
+    params.append("client_id", clientId);
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("code_verifier", verifier!);
+
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params
+    });
+
+    return await result.json();
+}
+
+async function refreshAccessToken(clientId: string, refreshToken: string) {
+    const params = new URLSearchParams();
+    params.append("client_id", clientId);
+    params.append("grant_type", "refresh_token");
+    params.append("refresh_token", refreshToken);
+
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params
+    });
+
+    const { access_token } = await result.json();
+    return access_token;
 }
 
 function generateCodeVerifier(length: number) {
