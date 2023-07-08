@@ -1,5 +1,6 @@
 const clientId = "6c1f6ff1160a4478b366fdc145157a47"; // Replace with your client id
-const code = undefined;
+const params = new URLSearchParams(window.location.search);
+const code = params.get("code");
 
 if (!code) {
     redirectToAuthCodeFlow(clientId);
@@ -45,14 +46,46 @@ async function generateCodeChallenge(codeVerifier: string) {
         .replace(/=+$/, '');
 }
 
-async function getAccessToken(clientId: string, code: string) {
-  // TODO: Get access token for code
+export async function getAccessToken(clientId: string, code: string): Promise<string> {
+    const verifier = localStorage.getItem("verifier");
+
+    const params = new URLSearchParams();
+    params.append("client_id", clientId);
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    params.append("redirect_uri", "http://localhost:5173/callback");
+    params.append("code_verifier", verifier!);
+
+    const result = await fetch("https://accounts.spotify.com/api/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: params
+    });
+
+    const { access_token } = await result.json();
+    return access_token;
 }
 
 async function fetchProfile(token: string): Promise<any> {
-    // TODO: Call Web API
+    const result = await fetch("https://api.spotify.com/v1/me", {
+        method: "GET", headers: { Authorization: `Bearer ${token}` }
+    });
+
+    return await result.json();
 }
 
 function populateUI(profile: any) {
-    // TODO: Update UI with profile data
+    document.getElementById("displayName")!.innerText = profile.display_name;
+    if (profile.images[0]) {
+        const profileImage = new Image(200, 200);
+        profileImage.src = profile.images[0].url;
+        document.getElementById("avatar")!.appendChild(profileImage);
+    }
+    document.getElementById("id")!.innerText = profile.id;
+    document.getElementById("email")!.innerText = profile.email;
+    document.getElementById("uri")!.innerText = profile.uri;
+    document.getElementById("uri")!.setAttribute("href", profile.external_urls.spotify);
+    document.getElementById("url")!.innerText = profile.href;
+    document.getElementById("url")!.setAttribute("href", profile.href);
+    document.getElementById("imgUrl")!.innerText = profile.images[0]?.url ?? '(no profile image)';
 }
