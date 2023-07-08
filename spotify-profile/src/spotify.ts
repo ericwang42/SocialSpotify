@@ -10,10 +10,9 @@ export async function redirectToAuthCodeFlow(clientId: string) {
     params.append("client_id", clientId);
     params.append("response_type", "code");
     params.append("redirect_uri", "http://localhost:5173/callback");
-    params.append("scope", "user-read-private user-read-email user-top-read");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
-    params.append("scope", "user-read-private user-read-email user-read-currently-playing");
+    params.append("scope", "user-read-private user-read-email user-top-read user-read-currently-playing");
 
     document.location = `https://accounts.spotify.com/authorize?${params.toString()}`;
 }
@@ -101,13 +100,20 @@ export async function fetchProfile(token: string): Promise<any> {
     return await result.json();
 }
 
-export async function fetchTopTracks(access_token: string): Promise<any> {
-    const result = await fetch("https://api.spotify.com/v1/me/top/tracks?limit=10", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${access_token}` },
+export async function fetchTopTracks(token: string) {
+    const url = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10&offset=0";
+    const response = await fetch(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
     });
   
-    return await result.json();
+    if (!response.ok) {
+      throw new Error("Failed to fetch top tracks");
+    }
+  
+    const data = await response.json();
+    return data.items; // Return the array of top tracks
   }
 
 export function populateTracks(topTracks: any){
@@ -115,7 +121,7 @@ export function populateTracks(topTracks: any){
     if (tracksContainer) {
         tracksContainer.innerHTML = ""; // Clear previous tracks
 
-        topTracks.items.forEach((track: any) => {
+        topTracks.forEach((track: any) => {
             const trackElement = document.createElement("li");
             trackElement.innerText = track.name;
             tracksContainer.appendChild(trackElement);

@@ -12,13 +12,11 @@ if (!code) {
     const { access_token, refresh_token } = tokens;
     const profile = await Spotify.fetchProfile(access_token);
     Spotify.populateProfile(profile);
-    const tracks = await Spotify.fetchTopTracks(access_token);
-    Spotify.populateTracks(tracks);
-    
-
     localStorage.setItem("refresh_token", refresh_token);
 
     await displayCurrentlyPlaying(access_token);
+    const tracks = await Spotify.fetchTopTracks(access_token);
+    Spotify.populateTracks(tracks);
 }
 
 const refreshToken = localStorage.getItem("refresh_token");
@@ -27,3 +25,5 @@ if (refreshToken) {
     // Use the new access token for API requests or update the existing access token in your code
     // For example: accessToken = newAccessToken;
 }
+
+
