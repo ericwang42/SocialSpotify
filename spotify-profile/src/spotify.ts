@@ -145,6 +145,35 @@ export async function fetchCurrentlyPlaying(token: string) {
     return data.item; // Return the currently playing track object
 }
 
+export async function fetchTopArtists(token: string) {
+    const url = "https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=10&offset=0";
+    const response = await fetch(url, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+  
+    if (!response.ok) {
+      throw new Error("Failed to fetch top Artists");
+    }
+  
+    const data = await response.json();
+    return data.items; // Return the array of top tracks
+  }
+
+export function populateArtists(topArtists: any){
+    const artistsContainer = document.getElementById("Artists");
+    if (artistsContainer) {
+        artistsContainer.innerHTML = ""; // Clear previous tracks
+
+        topArtists.forEach((track: any) => {
+            const artistsElement = document.createElement("li");
+            artistsElement.innerText = track.name;
+            artistsContainer.appendChild(artistsElement);
+        });
+    }
+}
+
 export function populateProfile(profile: any) {
     document.getElementById("displayName")!.innerText = profile.display_name;
     if (profile.images[0]) {
