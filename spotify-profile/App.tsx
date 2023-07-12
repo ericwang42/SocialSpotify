@@ -24,6 +24,13 @@ function SpotifyProfile() {
 
       <script src="src/script.ts" type="module"></script>
       <script src="src/cards/CurrentlyListening.ts" type="module"></script>
+
+      <h1>Top Artists</h1>
+      <div id="Artists"></div>
+
+      <script src="src/script.ts" type="module"></script>
+      <script src="src/cards/CurrentlyListening.ts" type="module"></script>
+      <script src="src/cards/TopArtists.ts" type="module"></script>
     </div>
   );
 }
