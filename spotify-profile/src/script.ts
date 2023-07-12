@@ -1,10 +1,10 @@
 import * as Spotify from './spotify';
-import { displayCurrentlyPlaying } from './cards/CurrentlyListening';
+import displayCurrentlyPlaying from "./cards/CurrentlyListening";
 import { displayTopArtists} from './cards/TopArtists';
 //import { displayTopTracks} from './cards/TopTracks';
 //import { displayProfile} from './cards/Profile';
 
-const clientId = "61a5d7889496482bae1236a07b7b76a6";
+const clientId = "6c1f6ff1160a4478b366fdc145157a47";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
 

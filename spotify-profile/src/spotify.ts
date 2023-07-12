@@ -1,4 +1,4 @@
-export const clientId = "61a5d7889496482bae1236a07b7b76a6";
+export const clientId = "6c1f6ff1160a4478b366fdc145157a47";
 
 export async function redirectToAuthCodeFlow(clientId: string) {
     const verifier = generateCodeVerifier(128);
@@ -128,22 +128,6 @@ export function populateTracks(topTracks: any){
         });
     }
 }
-
-export async function fetchTopArtists(token: string) {
-    const url = "https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=10&offset=0";
-    const response = await fetch(url, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    });
-  
-    if (!response.ok) {
-      throw new Error("Failed to fetch top Artists");
-    }
-  
-    const data = await response.json();
-    return data.items; // Return the array of top tracks
-  }
 
 export function populateArtists(topArtists: any){
     const artistsContainer = document.getElementById("Artists");
