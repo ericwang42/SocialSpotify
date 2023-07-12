@@ -1,4 +1,4 @@
-export const clientId = "6c1f6ff1160a4478b366fdc145157a47";
+export const clientId = "61a5d7889496482bae1236a07b7b76a6";
 
 export async function redirectToAuthCodeFlow(clientId: string) {
     const verifier = generateCodeVerifier(128);
@@ -127,22 +127,6 @@ export function populateTracks(topTracks: any){
             tracksContainer.appendChild(trackElement);
         });
     }
-}
-
-
-export async function fetchCurrentlyPlaying(token: string) {
-    const result = await fetch("https://api.spotify.com/v1/me/player/currently-playing", {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    });
-
-    if (result.status === 204) {
-        return null; // No track is currently playing
-    }
-
-    const data = await result.json();
-    return data.item; // Return the currently playing track object
 }
 
 export async function fetchTopArtists(token: string) {
