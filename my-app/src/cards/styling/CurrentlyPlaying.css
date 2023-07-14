@@ -1,0 +1,31 @@
+.currently-playing-card {
+  display: flex;
+  background-color: #2a2a2a;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.album-art-container img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.track-info-container {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.currently-playing-track {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.currently-playing-artist {
+  font-size: 16px;
+  color: #aaa;
+}

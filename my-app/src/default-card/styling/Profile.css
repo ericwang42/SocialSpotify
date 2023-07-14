@@ -1,0 +1,54 @@
+#profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 428px; /* iPhone 13 Pro Max width */
+  margin: 0 auto; /* Center the card horizontally */
+  background-color: #1e1e1e;
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+#avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#avatar img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+#displayName {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+li span {
+  font-weight: bold;
+}
+
+/* For devices with width less than or equal to 428px (iPhone 13 Pro Max width) */
+@media (max-width: 428px) {
+  body {
+    padding: 10px; /* Add some padding on smaller screens */
+  }
+}
