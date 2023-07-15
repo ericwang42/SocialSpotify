@@ -14,7 +14,6 @@ function SpotifyProfile() {
   const spotifyToken = useSpotifyToken();
 
   return (
-    <>
     <div className="spotify-card">
       <Profile token={spotifyToken} />
 
@@ -29,9 +28,7 @@ function SpotifyProfile() {
       <div style={{ marginTop: '10px' }}>
         <TopArtists token={spotifyToken} />
       </div>
-    </div>
-
-    <Router>
+      <Router>
       <Routes>
         <Route path="/search" element={<Search />} />
         <Route path="/callback" element={<Callback />} />
@@ -39,7 +36,9 @@ function SpotifyProfile() {
       </Routes>
       <Navbar />
     </Router>
-    </>
+    </div>
+
+    
   );
 }
 

@@ -4,10 +4,9 @@
 }
 
 .spotify-card {
-  max-width: 375px; /* iPhone 14 width */
+  max-width: 428px; /* iPhone 14 width */
   margin: 0 auto; /* Center the card */
   background: #1e1e1e; /* Dark background */
-  border-radius: 25px; /* Rounded corners */
   padding: 20px; /* Spacing inside the card */
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Add a shadow for the "card" effect */
   color: #fff; /* White text */
