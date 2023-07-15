@@ -1,0 +1,24 @@
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 428px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: #202020;
+  }
+  
+  .search-container input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 18px;
+  }
+  
+  .search-container button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  

@@ -23,7 +23,7 @@ const TopArtists: React.FC<TopArtistsProps> = ({ token }) => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -34,7 +34,7 @@ const TopArtists: React.FC<TopArtistsProps> = ({ token }) => {
         const artists = data.items.map((item: any) => ({
           id: item.id,
           name: item.name,
-          imageUrl: item.images[0]?.url || '' // Use the first image's URL or empty string if not available
+          imageUrl: item.images[0]?.url || '', // Use the first image's URL or empty string if not available
         }));
         setTopArtists(artists);
       } catch (error) {
@@ -51,7 +51,11 @@ const TopArtists: React.FC<TopArtistsProps> = ({ token }) => {
       <ul className="top-artists__list">
         {topArtists.map((artist) => (
           <li key={artist.id} className="top-artists__item">
-            <img src={artist.imageUrl} alt={artist.name} className="top-artists__image" />
+            <img
+              src={artist.imageUrl}
+              alt={artist.name}
+              className="top-artists__image"
+            />
             <span className="top-artists__name">{artist.name}</span>
           </li>
         ))}
