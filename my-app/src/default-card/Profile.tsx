@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './styling/Profile.css';
+import Card from '@mui/material/Card';
+
 
 interface ProfileProps {
   token: string;
@@ -13,6 +15,7 @@ const Profile: React.FC<ProfileProps> = ({ token }) => {
     uri: '',
     href: '',
     imageUrl: '',
+    followers: 0, // New property for followers
   });
 
   useEffect(() => {
@@ -38,20 +41,26 @@ const Profile: React.FC<ProfileProps> = ({ token }) => {
       uri: data.uri,
       href: data.href,
       imageUrl,
+      followers: data.followers.total,
     });
   }
 
   return (
     <section id="profile">
-      <div id="avatar">
-        {profile.imageUrl && <img src={profile.imageUrl} alt="avatar" />}
-        <h2>
-          <span id="displayName">{profile.displayName}</span>
-        </h2>
-      </div>
+      <Card className='header'>
+        <div id="avatar">
+          {profile.imageUrl && <img src={profile.imageUrl} alt="avatar" />}
+          <h2>
+            <span id="displayName">{profile.displayName}</span>
+          </h2>
+        </div>
+      </Card>
       <ul>
         <li>
           User ID: <span id="id">{profile.id}</span>
+        </li>
+        <li>
+          Followers: <span id="followers">{profile.followers}</span> {/* Render the followers value */}
         </li>
         {/* <li>Email: <span id="email">{profile.email}</span></li> */}
         {/* <li>Spotify URI: <button id="uri">{profile.uri}</button></li> */}
