@@ -11,10 +11,9 @@ function HomePage() {
         const code = params.get('code');
         console.log("Token: ", spotifyToken);
 
+        // Fetch a token only if a code is available
         if (code) {
             fetchToken(code);
-        } else if (!spotifyToken) {
-            redirectToAuthCodeFlow(clientId);  // Use redirectToAuthCodeFlow here
         }
     }, [spotifyToken, fetchToken]);
 
