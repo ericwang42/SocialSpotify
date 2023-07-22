@@ -13,8 +13,7 @@ import Search from './pages/Search';
 import HomePage from './pages/HomePage';
 
 function App() {
-  const spotifyToken = useSpotifyToken();
-
+  const { spotifyToken, fetchToken } = useSpotifyToken();
   return (
     <Router>
       <Routes>

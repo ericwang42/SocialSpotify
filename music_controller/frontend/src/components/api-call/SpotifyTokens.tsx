@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import * as Spotify from './spotify';
 
 export function useSpotifyToken() {
-  const [spotifyToken, setSpotifyToken] = useState('');
+  const [spotifyToken, setSpotifyToken] = useState(null);
 
   async function fetchToken(code: string) {
     const clientId = '6c1f6ff1160a4478b366fdc145157a47';

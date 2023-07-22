@@ -1,25 +1,28 @@
 import React, { useEffect } from 'react';
 import { useSpotifyToken } from '../api-call/SpotifyTokens';
+import { redirectToAuthCodeFlow, clientId } from '../api-call/spotify';  // Import redirectToAuthCodeFlow
 
 function HomePage() {
-    const { spotifyToken, initiateSpotifyLogin } = useSpotifyToken();
-    console.log("Token in HomePage: ", spotifyToken); // Added this line
+    const { spotifyToken, fetchToken } = useSpotifyToken();
+    console.log("Token in HomePage: ", spotifyToken);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const code = params.get('code');
-        console.log("Token: ", spotifyToken); // Add this line
+        console.log("Token: ", spotifyToken);
 
-        if (!code && !spotifyToken) {
-            initiateSpotifyLogin();
+        if (code) {
+            fetchToken(code);
+        } else if (!spotifyToken) {
+            redirectToAuthCodeFlow(clientId);  // Use redirectToAuthCodeFlow here
         }
-    }, [spotifyToken, initiateSpotifyLogin]);
+    }, [spotifyToken, fetchToken]);
 
     return (
         <div>
             <button onClick={() => {
                 console.log('Log in with Spotify clicked');
-                initiateSpotifyLogin();
+                redirectToAuthCodeFlow(clientId);  // Use redirectToAuthCodeFlow here
             }}>
                 Log in with Spotify
             </button>
