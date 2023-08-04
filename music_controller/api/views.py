@@ -1,22 +1,23 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework import generics
-from .serializers import UserProfileSerializer, CardSerializer, AlbumCoverSerializer
-from .models import UserProfile, Card, AlbumCover
+from rest_framework import generics, status
+from .serializers import UserProfileSerializer, CardSerializer
+from .models import UserProfile, Card
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 
-
-# Create your views here.
-
-class UserProfileView(generics.CreateAPIView):
+class UserProfileView(generics.ListAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
 
-class CardList(generics.ListCreateAPIView):
-    queryset = Card.objects.all()
-    serializer_class = CardSerializer
 
-class AlbumCoverList(generics.ListCreateAPIView):
-    queryset = AlbumCover.objects.all()
-    serializer_class = AlbumCoverSerializer
+class CreateUserProfileView(APIView):
+    serializer_class = UserProfileSerializer
 
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user_profile = serializer.save()
+            return Response(UserProfileSerializer(user_profile).data, status=status.HTTP_201_CREATED)
+
+        return Response({'Bad Request': 'Invalid data...'}, status=status.HTTP_400_BAD_REQUEST)
